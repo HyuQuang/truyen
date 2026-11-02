@@ -1182,6 +1182,266 @@
     .list-item { grid-template-columns: 40px 90px 1fr 90px; }
     .list-channel, .list-btn-col { display: none; }
   }
+
+  /* ================== FAVORITE CATEGORIES STYLING ================== */
+  .fav-categories-panel {
+    background: linear-gradient(135deg, rgba(244, 63, 94, 0.08), rgba(56, 189, 248, 0.05));
+    border: 1px solid rgba(244, 63, 94, 0.25);
+    border-radius: var(--radius-lg);
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    animation: fadeInFav 0.3s ease;
+  }
+  @keyframes fadeInFav {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fav-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .fav-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .fav-panel-icon {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 10px rgba(244, 63, 94, 0.6));
+  }
+
+  .fav-panel-title h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .fav-panel-title p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .fav-panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .btn-create-fav-cat {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #f43f5e, #fb7185);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35);
+  }
+
+  .btn-create-fav-cat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(244, 63, 94, 0.5);
+  }
+
+  .btn-fav-repo-scope {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    padding: 8px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-fav-repo-scope:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+
+  .btn-fav-repo-scope.active {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .fav-cat-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .fav-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: 7px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .fav-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .fav-tab-btn.active {
+    background: linear-gradient(135deg, #f43f5e, #e11d48);
+    color: #fff;
+    border-color: transparent;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(244, 63, 94, 0.4);
+  }
+
+  .fav-tab-count {
+    background: rgba(0, 0, 0, 0.35);
+    padding: 1px 7px;
+    border-radius: var(--radius-full);
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+
+  .fav-tab-del {
+    margin-left: 2px;
+    opacity: 0.6;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .fav-tab-del:hover {
+    opacity: 1;
+    color: #ffedd5;
+  }
+
+  /* Card Category Selector */
+  .fav-cat-tag-wrap {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    background: rgba(10, 15, 26, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .fav-cat-badge {
+    padding: 3px 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #f43f5e;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .fav-cat-select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .fav-cat-tag-wrap:hover {
+    border-color: var(--accent-rose);
+    background: rgba(244, 63, 94, 0.15);
+  }
+
+  /* Toast Notification */
+  .hyu-toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid var(--primary);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.3);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hyu-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Emoji icon picker */
+  .fav-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .fav-icon-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fav-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: scale(1.1);
+  }
+
+  .fav-icon-btn.active {
+    background: rgba(244, 63, 94, 0.25);
+    border-color: var(--accent-rose);
+    box-shadow: 0 0 12px rgba(244, 63, 94, 0.4);
+  }
 </style>
 </head>
 <body>
@@ -1274,12 +1534,12 @@
       </div>
     </div>
 
-    <div class="nav-item" onclick="toggleOnlyFavorites()">
+    <div class="nav-item" id="nav-favorites" onclick="toggleOnlyFavorites()">
       <div class="nav-item-left">
         <span class="nav-icon">❤️</span>
         <div class="nav-text-col">
           <span class="nav-name">Tủ Sách Yêu Thích</span>
-          <span class="nav-sub">Đã lưu trữ</span>
+          <span class="nav-sub">Đã phân loại</span>
         </div>
       </div>
       <span class="nav-badge" id="favSidebarBadge">0</span>
@@ -1379,6 +1639,9 @@
       <button class="reset-link" onclick="resetAllFilters()">✕ Đặt lại tất cả bộ lọc</button>
     </div>
 
+    <!-- Favorite Categories Bar (Rendered in Favorites view) -->
+    <div id="favCategoriesBarContainer" style="display:none;"></div>
+
     <!-- Display Area -->
     <div id="contentDisplayArea">
       <!-- Injected dynamically -->
@@ -1413,6 +1676,18 @@
       <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px; margin-bottom:20px;">
         <div style="color:var(--primary); font-size:0.8rem; font-weight:700; text-transform:uppercase; margin-bottom:6px;">📖 Tóm Tắt Cốt Truyện Chi Tiết:</div>
         <p id="modalSynopsis" style="font-size:0.95rem; color:var(--text-secondary); line-height:1.65;"></p>
+      </div>
+
+      <!-- Favorite & Category Row inside Video Modal -->
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; padding:10px 14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; flex-wrap:wrap;">
+        <button class="btn-action-hero" style="padding:8px 14px; font-size:0.85rem;" onclick="toggleFavoriteVideoCurrent()">
+          <span id="videoModalFavText">❤️ Lưu Vào Tủ Sách</span>
+        </button>
+        <div id="videoModalFavCatRow" style="display:none; align-items:center; gap:8px;">
+          <span style="font-size:0.8rem; color:var(--text-muted);">Mục yêu thích:</span>
+          <select id="videoModalFavCatSelect" onchange="changeCurrentVideoFavCat(this.value)" style="background:rgba(15,23,42,0.9); border:1px solid rgba(244,63,94,0.4); color:#fff; border-radius:6px; padding:6px 10px; font-size:0.82rem; outline:none; cursor:pointer;">
+          </select>
+        </div>
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
@@ -1453,8 +1728,15 @@
 
           <div class="comic-genres-pills" id="comicModalGenres" style="margin-bottom:16px;"></div>
 
-          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:14px; margin-bottom:20px; font-size:0.92rem; color:var(--text-secondary); line-height:1.6;" id="comicModalDesc">
+          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:14px; margin-bottom:16px; font-size:0.92rem; color:var(--text-secondary); line-height:1.6;" id="comicModalDesc">
             Mô tả cốt truyện...
+          </div>
+
+          <!-- Favorite Category Row in Comic Modal -->
+          <div id="comicModalFavCatRow" style="display:none; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px; padding:8px 12px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px;">
+            <span style="font-size:0.82rem; color:var(--text-muted);">Mục yêu thích:</span>
+            <select id="comicModalFavCatSelect" onchange="changeCurrentComicFavCat(this.value)" style="background:rgba(15,23,42,0.9); border:1px solid rgba(244,63,94,0.4); color:#fff; border-radius:6px; padding:5px 10px; font-size:0.82rem; outline:none; cursor:pointer;">
+            </select>
           </div>
         </div>
 
@@ -1548,6 +1830,60 @@ Ta Thu Nhận Đồ Đệ Đều Là Khí Vận Chi Tử..."></textarea>
   </div>
 </div>
 
+<!-- ================== MODAL CREATE CUSTOM FAVORITE CATEGORY ================== -->
+<div class="modal-overlay" id="createFavCategoryModal" onclick="closeCreateFavCategoryModal(event)">
+  <div class="sync-modal-container" style="max-width:480px;" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeCreateFavCategoryModal()">✕</button>
+
+    <div style="font-family:'Plus Jakarta Sans',sans-serif; font-size:1.3rem; font-weight:800; color:#fff; margin-bottom:6px;">
+      ➕ Tạo Mục Yêu Thích Mới
+    </div>
+    <div style="color:var(--text-secondary); font-size:0.86rem; margin-bottom:16px;">
+      Thêm danh mục riêng để phân loại truyện và video theo sở thích của bạn.
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--primary); margin-bottom:6px;">Tên mục yêu thích:</label>
+      <input type="text" id="newFavCatName" placeholder="Ví dụ: Đô Thị Hài Hước, Cẩu Đạo, Ma Đạo..." style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--border-subtle); border-radius:8px; padding:10px 14px; color:#fff; font-size:0.92rem; outline:none;">
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <label style="display:block; font-size:0.82rem; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">Chọn biểu tượng (Icon):</label>
+      <div class="fav-icon-grid" id="favIconGrid">
+        <button class="fav-icon-btn active" type="button" onclick="selectFavIcon(this, '⭐')">⭐</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '⚡')">⚡</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '🥋')">🥋</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '🧟')">🧟</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '⚔️')">⚔️</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '🐾')">🐾</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '🔄')">🔄</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '👑')">👑</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '🔥')">🔥</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '💀')">💀</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '🐉')">🐉</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '🧙')">🧙</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '📚')">📚</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '🎬')">🎬</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '🎭')">🎭</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '🚀')">🚀</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '🛡️')">🛡️</button>
+        <button class="fav-icon-btn" type="button" onclick="selectFavIcon(this, '💎')">💎</button>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:10px; justify-content:flex-end;">
+      <button class="btn-action-hero" style="padding:10px 18px;" onclick="closeCreateFavCategoryModal()">Hủy</button>
+      <button class="btn-action-hero highlight" style="padding:10px 20px;" onclick="confirmCreateFavCategory()">Tạo Danh Mục</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div class="hyu-toast" id="hyuToast">
+  <span id="hyuToastIcon">✨</span>
+  <span id="hyuToastMsg">Thông báo</span>
+</div>
+
 <!-- BACK TO TOP -->
 <button class="back-to-top" id="backToTopBtn" onclick="scrollToTop()">
   <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
@@ -1608,6 +1944,300 @@ try {
   const saved = localStorage.getItem('yt_truyen_favs');
   if (saved) favorites = new Set(JSON.parse(saved));
 } catch(e) {}
+
+// ================== FAVORITE CATEGORIES SYSTEM ==================
+const DEFAULT_FAV_CATEGORIES = [
+  { id: 'cao_vo', name: 'Cao Võ', icon: '⚡' },
+  { id: 'vo_hoc', name: 'Võ Học', icon: '🥋' },
+  { id: 'mat_the', name: 'Tận Thế', icon: '🧟' },
+  { id: 'tu_tien', name: 'Tu Tiên', icon: '⚔️' },
+  { id: 'ngu_thu', name: 'Ngự Thú', icon: '🐾' },
+  { id: 'trong_sinh', name: 'Trọng Sinh', icon: '🔄' },
+  { id: 'khac', name: 'Mục Khác', icon: '📁' }
+];
+
+let currentFavCategory = 'all'; // 'all' or category ID
+let favRepoScope = 'all'; // 'all' or 'current'
+
+// Mapping from itemId -> categoryId
+let favItemCategories = {};
+try {
+  const savedCatMap = localStorage.getItem('yt_truyen_fav_categories_map');
+  if (savedCatMap) favItemCategories = JSON.parse(savedCatMap);
+} catch(e) {}
+
+function getCustomFavCategories() {
+  try {
+    const saved = localStorage.getItem('yt_truyen_custom_fav_categories');
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  return [];
+}
+
+function saveCustomFavCategories(cats) {
+  try {
+    localStorage.setItem('yt_truyen_custom_fav_categories', JSON.stringify(cats));
+  } catch(e) {}
+}
+
+function getAllFavCategories() {
+  return [...DEFAULT_FAV_CATEGORIES, ...getCustomFavCategories()];
+}
+
+function saveFavItemCategories() {
+  try {
+    localStorage.setItem('yt_truyen_fav_categories_map', JSON.stringify(favItemCategories));
+  } catch(e) {}
+}
+
+// Auto-detect best category based on content keywords
+function detectFavCategory(item) {
+  const text = ((item.title || '') + ' ' + (item.genre || '') + ' ' + (item.desc || '') + ' ' + (item.genres ? item.genres.join(' ') : '')).toLowerCase();
+  
+  if (/cao võ|dị năng|thần thoại đô thị|toàn cầu cao võ|toàn cầu|siêu năng|thức tỉnh|dị nhân|pháp sư/i.test(text)) {
+    return 'cao_vo';
+  }
+  if (/tận thế|mạt thế|zombie|virus|đóng băng|thảm họa|sinh tồn/i.test(text)) {
+    return 'mat_the';
+  }
+  if (/ngự thú|dị thú|thần sủng|sủng vật|nuôi rồng|ngự long|tiến hóa|thuần thú/i.test(text)) {
+    return 'ngu_thu';
+  }
+  if (/tu tiên|tiên hiệp|tiên võ|tiên tôn|tiên đế|luyện khí|đan thần|trúc cơ|tu chân|hỗn độn|thần thạch|đan điền|ma tôn|ma đạo/i.test(text)) {
+    return 'tu_tien';
+  }
+  if (/võ học|võ đạo|võ hiệp|cổ võ|kiếm đạo|thần công|quyền vương|tông sư|võ thần|luyện thể|bách luyện/i.test(text)) {
+    return 'vo_hoc';
+  }
+  if (/trọng sinh|trùng sinh|tái sinh|hệ thống|level|thăng cấp|out trình|chuyển sinh|xuyên không|game/i.test(text)) {
+    return 'trong_sinh';
+  }
+  return 'khac';
+}
+
+function getFavItemCategory(itemId, item) {
+  if (favItemCategories[itemId]) return favItemCategories[itemId];
+  const detected = detectFavCategory(item || {});
+  favItemCategories[itemId] = detected;
+  saveFavItemCategories();
+  return detected;
+}
+
+// Combine all repos data for comprehensive favorites view
+function getAllReposData() {
+  const combined = [];
+  const seen = new Set();
+  for (let key in repoMeta) {
+    const list = getRepoData(key);
+    list.forEach(item => {
+      const id = item.vid_id || item.id;
+      if (!seen.has(id)) {
+        seen.add(id);
+        combined.push({ ...item, _repoType: repoMeta[key].type, _repoKey: key });
+      }
+    });
+  }
+  return combined;
+}
+
+// Toast notification
+let toastTimer = null;
+function showToast(msg, icon = '✨') {
+  const toast = document.getElementById('hyuToast');
+  if (!toast) return;
+  document.getElementById('hyuToastIcon').innerText = icon;
+  document.getElementById('hyuToastMsg').innerText = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2500);
+}
+
+// Change category for a specific item directly
+function changeFavItemCategory(e, itemId, newCatId) {
+  if (e) e.stopPropagation();
+  favItemCategories[itemId] = newCatId;
+  saveFavItemCategories();
+  const allCats = getAllFavCategories();
+  const catObj = allCats.find(c => c.id === newCatId) || { name: 'Mục Khác', icon: '📁' };
+  showToast(`Đã chuyển sang "${catObj.icon} ${catObj.name}"`, catObj.icon);
+  renderCurrentRepo();
+}
+
+function renderFavCategoriesPanel() {
+  const container = document.getElementById('favCategoriesBarContainer');
+  if (!container) return;
+
+  if (!showOnlyFav) {
+    container.style.display = 'none';
+    container.innerHTML = '';
+    return;
+  }
+
+  container.style.display = 'block';
+
+  // Determine items in scope
+  const targetData = (favRepoScope === 'all') ? getAllReposData() : getRepoData(currentRepo);
+  const favItems = targetData.filter(item => favorites.has(item.vid_id || item.id));
+
+  const allCats = getAllFavCategories();
+
+  // Count items per category
+  const catCounts = { all: favItems.length };
+  allCats.forEach(c => { catCounts[c.id] = 0; });
+
+  favItems.forEach(item => {
+    const id = item.vid_id || item.id;
+    const catId = getFavItemCategory(id, item);
+    catCounts[catId] = (catCounts[catId] || 0) + 1;
+  });
+
+  const customs = getCustomFavCategories();
+
+  let tabsHtml = `
+    <button class="fav-tab-btn ${currentFavCategory === 'all' ? 'active' : ''}" onclick="setFavCategory('all')">
+      🌟 Tất Cả <span class="fav-tab-count">${catCounts.all || 0}</span>
+    </button>
+  `;
+
+  allCats.forEach(c => {
+    const count = catCounts[c.id] || 0;
+    const isCustom = customs.some(cust => cust.id === c.id);
+    const delBtn = isCustom ? `<span class="fav-tab-del" title="Xóa danh mục này" onclick="deleteCustomFavCategory(event, '${c.id}')">✕</span>` : '';
+    tabsHtml += `
+      <button class="fav-tab-btn ${currentFavCategory === c.id ? 'active' : ''}" onclick="setFavCategory('${c.id}')">
+        <span>${c.icon} ${c.name}</span>
+        <span class="fav-tab-count">${count}</span>
+        ${delBtn}
+      </button>
+    `;
+  });
+
+  const scopeLabel = favRepoScope === 'all' ? '🌐 Tất Cả Kho (Đang xem)' : '📂 Kho Hiện Tại';
+
+  container.innerHTML = `
+    <div class="fav-categories-panel">
+      <div class="fav-panel-header">
+        <div class="fav-panel-title">
+          <div class="fav-panel-icon">❤️</div>
+          <div>
+            <h3>Tủ Sách Phân Loại Yêu Thích</h3>
+            <p>Đang lưu trữ <strong>${favItems.length}</strong> tác phẩm yêu thích - Đã phân chia thành các mục riêng</p>
+          </div>
+        </div>
+        <div class="fav-panel-actions">
+          <button class="btn-fav-repo-scope" onclick="toggleFavRepoScope()" title="Chuyển đổi xem yêu thích trong kho này hoặc toàn bộ các kho">
+            ${scopeLabel}
+          </button>
+          <button class="btn-create-fav-cat" onclick="openCreateFavCategoryModal()">
+            ➕ Tạo Mục Mới
+          </button>
+        </div>
+      </div>
+      <div class="fav-cat-tabs">
+        ${tabsHtml}
+      </div>
+    </div>
+  `;
+}
+
+function setFavCategory(catId) {
+  currentFavCategory = catId;
+  renderCurrentRepo();
+}
+
+function toggleFavRepoScope() {
+  favRepoScope = favRepoScope === 'all' ? 'current' : 'all';
+  renderCurrentRepo();
+}
+
+let selectedFavIcon = '⭐';
+function openCreateFavCategoryModal() {
+  selectedFavIcon = '⭐';
+  const nameInput = document.getElementById('newFavCatName');
+  if (nameInput) nameInput.value = '';
+  document.querySelectorAll('#favIconGrid .fav-icon-btn').forEach((b, idx) => {
+    b.classList.toggle('active', idx === 0);
+  });
+  const modal = document.getElementById('createFavCategoryModal');
+  if (modal) modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCreateFavCategoryModal(e) {
+  const modal = document.getElementById('createFavCategoryModal');
+  if (modal) modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function selectFavIcon(btn, icon) {
+  selectedFavIcon = icon;
+  document.querySelectorAll('#favIconGrid .fav-icon-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function confirmCreateFavCategory() {
+  const name = document.getElementById('newFavCatName').value.trim();
+  if (!name) return alert('Vui lòng nhập tên mục yêu thích!');
+  const newCat = {
+    id: 'user_cat_' + Date.now(),
+    name: name,
+    icon: selectedFavIcon
+  };
+  const customs = getCustomFavCategories();
+  customs.push(newCat);
+  saveCustomFavCategories(customs);
+  closeCreateFavCategoryModal();
+  showToast(`Đã tạo mục "${newCat.icon} ${newCat.name}" thành công!`, newCat.icon);
+  currentFavCategory = newCat.id;
+  renderCurrentRepo();
+}
+
+function deleteCustomFavCategory(e, catId) {
+  if (e) e.stopPropagation();
+  const customs = getCustomFavCategories();
+  const target = customs.find(c => c.id === catId);
+  if (!target) return;
+  if (!confirm(`Bạn có chắc muốn xóa mục "${target.name}"? Các truyện trong mục này sẽ được chuyển về "Mục Khác".`)) return;
+  const filtered = customs.filter(c => c.id !== catId);
+  saveCustomFavCategories(filtered);
+  for (let k in favItemCategories) {
+    if (favItemCategories[k] === catId) favItemCategories[k] = 'khac';
+  }
+  saveFavItemCategories();
+  if (currentFavCategory === catId) currentFavCategory = 'all';
+  showToast(`Đã xóa mục "${target.name}"`, '🗑️');
+  renderCurrentRepo();
+}
+
+function populateFavCatSelect(selectEl, currentCatId) {
+  if (!selectEl) return;
+  const allCats = getAllFavCategories();
+  selectEl.innerHTML = allCats.map(c => `
+    <option value="${c.id}" ${c.id === currentCatId ? 'selected' : ''}>${c.icon} ${c.name}</option>
+  `).join('');
+}
+
+function changeCurrentVideoFavCat(newCatId) {
+  if (!currentVideoObj) return;
+  favItemCategories[currentVideoObj.vid_id] = newCatId;
+  saveFavItemCategories();
+  const allCats = getAllFavCategories();
+  const catObj = allCats.find(c => c.id === newCatId) || { name: 'Mục Khác', icon: '📁' };
+  showToast(`Đã lưu video vào mục "${catObj.icon} ${catObj.name}"`, catObj.icon);
+  renderCurrentRepo();
+}
+
+function changeCurrentComicFavCat(newCatId) {
+  if (!currentComicObj) return;
+  favItemCategories[currentComicObj.id] = newCatId;
+  saveFavItemCategories();
+  const allCats = getAllFavCategories();
+  const catObj = allCats.find(c => c.id === newCatId) || { name: 'Mục Khác', icon: '📁' };
+  showToast(`Đã lưu truyện vào mục "${catObj.icon} ${catObj.name}"`, catObj.icon);
+  renderCurrentRepo();
+}
 
 // Storage Version Migration to force-load authentic AniList dataset
 const APP_STORAGE_VERSION = 'v2_real_official_comics';
@@ -1792,54 +2422,68 @@ function setupRepoControls() {
 // Render active repository
 function renderCurrentRepo() {
   const meta = repoMeta[currentRepo];
-  const data = getRepoData(currentRepo);
+  renderFavCategoriesPanel();
+
+  // If viewing favorites, determine dataset based on favRepoScope
+  let data;
+  if (showOnlyFav && favRepoScope === 'all') {
+    data = getAllReposData();
+  } else {
+    data = getRepoData(currentRepo);
+  }
+
   const displayArea = document.getElementById('contentDisplayArea');
   const resultInfo = document.getElementById('resultInfo');
   displayArea.innerHTML = '';
 
   const query = currentSearch.toLowerCase().trim();
+  const allCats = getAllFavCategories();
 
   let filtered = data.filter(item => {
-    // Favorites filter
     const itemId = item.vid_id || item.id;
-    if (showOnlyFav && !favorites.has(itemId)) return false;
-
-    if (meta.type === 'video') {
-      // Video channel filter
-      if (currentPrimaryFilter !== 'all' && (item.channel || 'Kênh mới') !== currentPrimaryFilter) return false;
-
-      // Category filter
-      if (currentCategory === 'nguthu') {
-        if (!/ngự thú|sủng|ngự long|nuôi rồng|thuần thú/i.test(item.title)) return false;
-      } else if (currentCategory === 'over50') {
-        if (item.seconds < 50 * 3600) return false;
-      } else if (currentCategory === '30to50') {
-        if (item.seconds < 30 * 3600 || item.seconds >= 50 * 3600) return false;
-      } else if (currentCategory === 'tutien') {
-        if (!/tu tiên|tiên tôn|tiên đế|lão tổ|luyện khí|đan thần|võ lâm|kiếm thần/i.test(item.title)) return false;
-      } else if (currentCategory === 'matthe') {
-        if (!/mạt thế|zombie|tận thế|virus|đóng băng/i.test(item.title)) return false;
-      } else if (currentCategory === 'satthu') {
-        if (!/sát thủ|lính đánh thuê|báo thù|đặc vụ|giang hồ/i.test(item.title)) return false;
+    // Favorites filter
+    if (showOnlyFav) {
+      if (!favorites.has(itemId)) return false;
+      if (currentFavCategory !== 'all') {
+        const itemCat = getFavItemCategory(itemId, item);
+        if (itemCat !== currentFavCategory) return false;
       }
     } else {
-      // Comic status filter
-      if (currentPrimaryFilter === 'ongoing' && item.status !== 'Đang tiến hành') return false;
-      if (currentPrimaryFilter === 'completed' && item.status !== 'Đã hoàn thành') return false;
-      if (currentPrimaryFilter === 'over1000' && item.chapters < 1000) return false;
-      if (currentPrimaryFilter === 'over500' && (item.chapters < 500 || item.chapters >= 1000)) return false;
+      // Normal repo filters
+      const itemType = item._repoType || meta.type;
+      if (itemType === 'video') {
+        if (currentPrimaryFilter !== 'all' && (item.channel || 'Kênh mới') !== currentPrimaryFilter) return false;
 
-      // Category filter
-      if (currentCategory !== 'all') {
-        if (!item.genres || !item.genres.some(g => g.toLowerCase().includes(currentCategory.toLowerCase()))) {
-          return false;
+        if (currentCategory === 'nguthu') {
+          if (!/ngự thú|sủng|ngự long|nuôi rồng|thuần thú/i.test(item.title)) return false;
+        } else if (currentCategory === 'over50') {
+          if (item.seconds < 50 * 3600) return false;
+        } else if (currentCategory === '30to50') {
+          if (item.seconds < 30 * 3600 || item.seconds >= 50 * 3600) return false;
+        } else if (currentCategory === 'tutien') {
+          if (!/tu tiên|tiên tôn|tiên đế|lão tổ|luyện khí|đan thần|võ lâm|kiếm thần/i.test(item.title)) return false;
+        } else if (currentCategory === 'matthe') {
+          if (!/mạt thế|zombie|tận thế|virus|đóng băng/i.test(item.title)) return false;
+        } else if (currentCategory === 'satthu') {
+          if (!/sát thủ|lính đánh thuê|báo thù|đặc vụ|giang hồ/i.test(item.title)) return false;
+        }
+      } else {
+        if (currentPrimaryFilter === 'ongoing' && item.status !== 'Đang tiến hành') return false;
+        if (currentPrimaryFilter === 'completed' && item.status !== 'Đã hoàn thành') return false;
+        if (currentPrimaryFilter === 'over1000' && item.chapters < 1000) return false;
+        if (currentPrimaryFilter === 'over500' && (item.chapters < 500 || item.chapters >= 1000)) return false;
+
+        if (currentCategory !== 'all') {
+          if (!item.genres || !item.genres.some(g => g.toLowerCase().includes(currentCategory.toLowerCase()))) {
+            return false;
+          }
         }
       }
     }
 
     // Text search
     if (query) {
-      const matchTitle = item.title.toLowerCase().includes(query);
+      const matchTitle = item.title && item.title.toLowerCase().includes(query);
       const matchDesc = item.desc && item.desc.toLowerCase().includes(query);
       const matchExtra = (item.channel && item.channel.toLowerCase().includes(query)) ||
                          (item.author && item.author.toLowerCase().includes(query)) ||
@@ -1850,96 +2494,165 @@ function renderCurrentRepo() {
   });
 
   // Sort
-  if (meta.type === 'video') {
+  if (meta.type === 'video' || (showOnlyFav && filtered.some(i => i.seconds !== undefined))) {
     if (currentSort === 'time-asc') {
-      filtered.sort((a, b) => a.seconds - b.seconds);
+      filtered.sort((a, b) => (a.seconds || 0) - (b.seconds || 0));
     } else if (currentSort === 'name-asc') {
       filtered.sort((a, b) => a.title.localeCompare(b.title, 'vi'));
+    } else if (currentSort === 'chap-desc') {
+      filtered.sort((a, b) => (b.chapters || 0) - (a.chapters || 0));
     } else {
-      filtered.sort((a, b) => b.seconds - a.seconds);
+      filtered.sort((a, b) => (b.seconds || 0) - (a.seconds || 0));
     }
   } else {
-    // Comic sort
     if (currentSort === 'chap-desc') {
-      filtered.sort((a, b) => b.chapters - a.chapters);
+      filtered.sort((a, b) => (b.chapters || 0) - (a.chapters || 0));
     } else if (currentSort === 'rating-desc') {
-      filtered.sort((a, b) => b.rating - a.rating);
+      filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     } else if (currentSort === 'name-asc') {
       filtered.sort((a, b) => a.title.localeCompare(b.title, 'vi'));
     }
   }
 
-  resultInfo.innerHTML = `Đang hiển thị <strong>${filtered.length}</strong> / ${data.length} ${meta.type === 'video' ? 'video' : 'truyện'}`;
+  // Result info
+  if (showOnlyFav) {
+    const curCatObj = allCats.find(c => c.id === currentFavCategory);
+    const catName = curCatObj ? `${curCatObj.icon} ${curCatObj.name}` : 'Tất Cả';
+    resultInfo.innerHTML = `Đang hiển thị <strong>${filtered.length}</strong> mục yêu thích ${currentFavCategory !== 'all' ? `thuộc mục <strong>${catName}</strong>` : ''} (${favRepoScope === 'all' ? 'Toàn bộ các kho' : meta.name})`;
+  } else {
+    resultInfo.innerHTML = `Đang hiển thị <strong>${filtered.length}</strong> / ${data.length} ${meta.type === 'video' ? 'video' : 'truyện'}`;
+  }
 
   if (filtered.length === 0) {
     displayArea.innerHTML = `
       <div style="text-align:center; padding:70px 20px; color:var(--text-muted);">
-        <h3 style="color:#fff; font-size:1.3rem; margin-bottom:8px;">Không tìm thấy kết quả nào phù hợp!</h3>
-        <p>Hãy thử thay đổi từ khóa tìm kiếm hoặc chọn lại bộ lọc thể loại khác nhé.</p>
+        <h3 style="color:#fff; font-size:1.3rem; margin-bottom:8px;">${showOnlyFav ? 'Chưa có tác phẩm nào trong mục này!' : 'Không tìm thấy kết quả nào phù hợp!'}</h3>
+        <p>${showOnlyFav ? 'Hãy đổi mục cho truyện yêu thích của bạn hoặc bấm "🌟 Tất Cả" để xem toàn bộ nhé.' : 'Hãy thử thay đổi từ khóa tìm kiếm hoặc chọn lại bộ lọc thể loại khác nhé.'}</p>
       </div>
     `;
     return;
   }
 
-  // RENDER CARDS
-  if (meta.type === 'video') {
+  // Helper to build category tag & select dropdown
+  function buildFavCatBadgeHtml(itemId, item) {
+    const catId = getFavItemCategory(itemId, item);
+    const catObj = allCats.find(c => c.id === catId) || { name: 'Mục Khác', icon: '📁' };
+    const optionsHtml = allCats.map(c => `<option value="${c.id}" ${c.id === catId ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('');
+    return `
+      <div class="fav-cat-tag-wrap" title="Nhấp để đổi mục yêu thích" onclick="event.stopPropagation()">
+        <span class="fav-cat-badge">${catObj.icon} ${catObj.name} ▾</span>
+        <select class="fav-cat-select" onchange="changeFavItemCategory(event, '${itemId}', this.value)">
+          ${optionsHtml}
+        </select>
+      </div>
+    `;
+  }
+
+  // Create Video Card helper
+  function createVideoCard(v, origRank) {
+    const isFav = favorites.has(v.vid_id);
+    let rankClass = 'normal';
+    if (origRank === 1) rankClass = 'top-1';
+    else if (origRank === 2) rankClass = 'top-2';
+    else if (origRank === 3) rankClass = 'top-3';
+    const isEpic = (v.seconds || 0) >= 40 * 3600 ? 'epic' : '';
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.onclick = () => openVideoModal(v, origRank);
+    card.innerHTML = `
+      <div class="thumb-wrap">
+        <img src="${v.thumb}" alt="Thumbnail" loading="lazy" onerror="this.src='https://via.placeholder.com/320x180/1e293b/ffffff?text=Video'">
+        <div class="thumb-gradient"></div>
+        <div class="play-hover-overlay">
+          <div class="play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <span class="rank-badge ${rankClass}">#${origRank}</span>
+        <button class="fav-btn ${isFav ? 'is-fav' : ''}" title="Lưu yêu thích" onclick="toggleFavVideo(event, '${v.vid_id}')">
+          ${isFav ? '❤️' : '🤍'}
+        </button>
+        <span class="duration-pill ${isEpic}">⏱ ${v.duration}</span>
+      </div>
+      <div class="card-body">
+        <div class="meta-top">
+          <span class="channel-badge">📺 ${v.channel || 'Kênh mới'}</span>
+          <span class="genre-badge">${(v.genre || 'Review').split('/')[0]}</span>
+        </div>
+        ${isFav ? buildFavCatBadgeHtml(v.vid_id, v) : ''}
+        <h3 class="card-title">${v.title}</h3>
+        <div class="card-footer">
+          <span class="detail-hint">ℹ️ Xem tóm tắt</span>
+          <a href="${v.link}" target="_blank" class="yt-button" onclick="event.stopPropagation()">▶ YouTube</a>
+        </div>
+      </div>
+    `;
+    return card;
+  }
+
+  // Create Comic Card helper
+  function createComicCard(c) {
+    const isFav = favorites.has(c.id);
+    const isCompleted = c.status === 'Đã hoàn thành';
+    const card = document.createElement('div');
+    card.className = 'comic-card';
+    card.onclick = () => openComicModal(c);
+    const genresHtml = (c.genres || []).slice(0, 3).map(g => `<span class="comic-genre-tag">${g}</span>`).join('');
+
+    card.innerHTML = `
+      <div class="comic-poster-box">
+        <img class="comic-poster-img" src="${c.cover}" alt="${c.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&q=80'">
+        <div class="comic-gradient"></div>
+        <span class="comic-status-pill ${isCompleted ? 'completed' : ''}">${c.status || 'Đang tiến hành'}</span>
+        <button class="fav-btn ${isFav ? 'is-fav' : ''}" style="top:10px; right:10px;" title="Lưu tủ sách" onclick="toggleFavComic(event, '${c.id}')">
+          ${isFav ? '❤️' : '🤍'}
+        </button>
+        <span class="comic-chap-badge">📖 ${(c.chapters || 0).toLocaleString()} chap</span>
+        <span class="comic-update-time">⏱ ${c.last_update || 'Mới'}</span>
+      </div>
+      <div class="comic-body">
+        <div class="comic-meta-row">
+          <span class="comic-rating">⭐ ${c.rating || 9.8}</span>
+          <span>👁️ ${c.views || '10M'}</span>
+        </div>
+        ${isFav ? buildFavCatBadgeHtml(c.id, c) : ''}
+        <h3 class="comic-title">${c.title}</h3>
+        <div class="comic-genres-pills">${genresHtml}</div>
+        <div class="comic-footer">
+          <span style="font-size:0.75rem; color:var(--text-muted);">${c.author || 'Tác giả'}</span>
+          <a href="${c.read_url || '#'}" target="_blank" class="btn-read-now" onclick="event.stopPropagation()">Đọc ngay</a>
+        </div>
+      </div>
+    `;
+    return card;
+  }
+
+  // RENDER DISPATCH
+  if (meta.type === 'video' && (!showOnlyFav || favRepoScope === 'current')) {
     if (currentView === 'grid') {
       const grid = document.createElement('div');
       grid.className = 'video-grid';
-      filtered.forEach((v, idx) => {
+      filtered.forEach(v => {
         const origRank = data.indexOf(v) + 1;
-        const isFav = favorites.has(v.vid_id);
-        let rankClass = 'normal';
-        if (origRank === 1) rankClass = 'top-1';
-        else if (origRank === 2) rankClass = 'top-2';
-        else if (origRank === 3) rankClass = 'top-3';
-
-        const isEpic = v.seconds >= 40 * 3600 ? 'epic' : '';
-
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.onclick = () => openVideoModal(v, origRank);
-        card.innerHTML = `
-          <div class="thumb-wrap">
-            <img src="${v.thumb}" alt="Thumbnail" loading="lazy" onerror="this.src='https://via.placeholder.com/320x180/1e293b/ffffff?text=Video'">
-            <div class="thumb-gradient"></div>
-            <div class="play-hover-overlay">
-              <div class="play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-            </div>
-            <span class="rank-badge ${rankClass}">#${origRank}</span>
-            <button class="fav-btn ${isFav ? 'is-fav' : ''}" title="Lưu yêu thích" onclick="toggleFavVideo(event, '${v.vid_id}')">
-              ${isFav ? '❤️' : '🤍'}
-            </button>
-            <span class="duration-pill ${isEpic}">⏱ ${v.duration}</span>
-          </div>
-          <div class="card-body">
-            <div class="meta-top">
-              <span class="channel-badge">📺 ${v.channel || 'Kênh mới'}</span>
-              <span class="genre-badge">${(v.genre || 'Review').split('/')[0]}</span>
-            </div>
-            <h3 class="card-title">${v.title}</h3>
-            <div class="card-footer">
-              <span class="detail-hint">ℹ️ Xem tóm tắt</span>
-              <a href="${v.link}" target="_blank" class="yt-button" onclick="event.stopPropagation()">▶ YouTube</a>
-            </div>
-          </div>
-        `;
-        grid.appendChild(card);
+        grid.appendChild(createVideoCard(v, origRank));
       });
       displayArea.appendChild(grid);
     } else {
-      // List View for Video
+      // List view
       const list = document.createElement('div');
       list.className = 'video-list-view';
       filtered.forEach(v => {
         const origRank = data.indexOf(v) + 1;
+        const isFav = favorites.has(v.vid_id);
         const item = document.createElement('div');
         item.className = 'list-item';
         item.onclick = () => openVideoModal(v, origRank);
         item.innerHTML = `
           <div class="list-rank">#${origRank}</div>
           <div class="list-thumb"><img src="${v.thumb}" alt="Thumbnail" loading="lazy"></div>
-          <div class="list-title">${v.title}</div>
+          <div class="list-title">
+            ${v.title}
+            ${isFav ? buildFavCatBadgeHtml(v.vid_id, v) : ''}
+          </div>
           <div class="list-channel">📺 ${v.channel || 'Kênh mới'}</div>
           <div class="list-time">⏱ ${v.duration}</div>
           <div class="list-btn-col">
@@ -1950,44 +2663,24 @@ function renderCurrentRepo() {
       });
       displayArea.appendChild(list);
     }
-  } else {
-    // COMIC CATALOG GRID
+  } else if (meta.type === 'comic' && (!showOnlyFav || favRepoScope === 'current')) {
     const grid = document.createElement('div');
     grid.className = 'comic-grid';
     filtered.forEach(c => {
-      const isFav = favorites.has(c.id);
-      const isCompleted = c.status === 'Đã hoàn thành';
-      const card = document.createElement('div');
-      card.className = 'comic-card';
-      card.onclick = () => openComicModal(c);
-
-      const genresHtml = (c.genres || []).slice(0, 3).map(g => `<span class="comic-genre-tag">${g}</span>`).join('');
-
-      card.innerHTML = `
-        <div class="comic-poster-box">
-          <img class="comic-poster-img" src="${c.cover}" alt="${c.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&q=80'">
-          <div class="comic-gradient"></div>
-          <span class="comic-status-pill ${isCompleted ? 'completed' : ''}">${c.status}</span>
-          <button class="fav-btn ${isFav ? 'is-fav' : ''}" style="top:10px; right:10px;" title="Lưu tủ sách" onclick="toggleFavComic(event, '${c.id}')">
-            ${isFav ? '❤️' : '🤍'}
-          </button>
-          <span class="comic-chap-badge">📖 ${c.chapters.toLocaleString()} chap</span>
-          <span class="comic-update-time">⏱ ${c.last_update}</span>
-        </div>
-        <div class="comic-body">
-          <div class="comic-meta-row">
-            <span class="comic-rating">⭐ ${c.rating || 9.8}</span>
-            <span>👁️ ${c.views || '10M'}</span>
-          </div>
-          <h3 class="comic-title">${c.title}</h3>
-          <div class="comic-genres-pills">${genresHtml}</div>
-          <div class="comic-footer">
-            <span style="font-size:0.75rem; color:var(--text-muted);">${c.author || 'Tác giả'}</span>
-            <a href="${c.read_url || '#'}" target="_blank" class="btn-read-now" onclick="event.stopPropagation()">Đọc ngay</a>
-          </div>
-        </div>
-      `;
-      grid.appendChild(card);
+      grid.appendChild(createComicCard(c));
+    });
+    displayArea.appendChild(grid);
+  } else {
+    // Cross-repo favorites view (combines both videos & comics seamlessly!)
+    const grid = document.createElement('div');
+    grid.className = 'video-grid';
+    filtered.forEach(item => {
+      if (item.vid_id || item._repoType === 'video' || item.seconds !== undefined) {
+        const origRank = data.indexOf(item) + 1;
+        grid.appendChild(createVideoCard(item, origRank));
+      } else {
+        grid.appendChild(createComicCard(item));
+      }
     });
     displayArea.appendChild(grid);
   }
@@ -2010,6 +2703,17 @@ function openVideoModal(video, rank) {
   document.getElementById('modalPlayerBox').style.display = 'none';
   document.getElementById('modalIframe').src = '';
   document.getElementById('playerBtnText').innerText = '▶ Xem Trước Trên Web';
+
+  // Favorite button & Category in Video Modal
+  const isFav = favorites.has(video.vid_id);
+  const favText = document.getElementById('videoModalFavText');
+  if (favText) favText.innerText = isFav ? '💔 Bỏ Khỏi Tủ Sách' : '❤️ Lưu Vào Tủ Sách';
+  const favRow = document.getElementById('videoModalFavCatRow');
+  if (favRow) favRow.style.display = isFav ? 'flex' : 'none';
+  if (isFav) {
+    const catId = getFavItemCategory(video.vid_id, video);
+    populateFavCatSelect(document.getElementById('videoModalFavCatSelect'), catId);
+  }
 
   document.getElementById('modalVideoOverlay').classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -2040,13 +2744,27 @@ function closeVideoModal(e) {
   document.getElementById('modalIframe').src = '';
 }
 
+function toggleFavoriteVideoCurrent() {
+  if (!currentVideoObj) return;
+  toggleFavVideo(null, currentVideoObj.vid_id);
+  const isFav = favorites.has(currentVideoObj.vid_id);
+  const favText = document.getElementById('videoModalFavText');
+  if (favText) favText.innerText = isFav ? '💔 Bỏ Khỏi Tủ Sách' : '❤️ Lưu Vào Tủ Sách';
+  const favRow = document.getElementById('videoModalFavCatRow');
+  if (favRow) favRow.style.display = isFav ? 'flex' : 'none';
+  if (isFav) {
+    const catId = getFavItemCategory(currentVideoObj.vid_id, currentVideoObj);
+    populateFavCatSelect(document.getElementById('videoModalFavCatSelect'), catId);
+  }
+}
+
 // Comic Modal
 let currentComicObj = null;
 function openComicModal(comic) {
   currentComicObj = comic;
   document.getElementById('comicModalCover').src = comic.cover;
-  document.getElementById('comicModalStatus').innerText = comic.status;
-  document.getElementById('comicModalChaps').innerText = '📖 ' + comic.chapters.toLocaleString() + ' chap';
+  document.getElementById('comicModalStatus').innerText = comic.status || 'Đang tiến hành';
+  document.getElementById('comicModalChaps').innerText = '📖 ' + (comic.chapters || 0).toLocaleString() + ' chap';
   document.getElementById('comicModalRating').innerText = '⭐ ' + (comic.rating || 9.8);
   document.getElementById('comicModalTitle').innerText = comic.title;
   document.getElementById('comicModalAuthor').innerText = comic.author || 'Đang cập nhật';
@@ -2057,8 +2775,16 @@ function openComicModal(comic) {
   const genresContainer = document.getElementById('comicModalGenres');
   genresContainer.innerHTML = (comic.genres || []).map(g => `<span class="comic-genre-tag" style="padding:4px 8px; font-size:0.75rem;">${g}</span>`).join('');
 
+  // Favorite & Category in Comic Modal
   const isFav = favorites.has(comic.id);
-  document.getElementById('comicModalFavText').innerText = isFav ? '💔 Bỏ Khỏi Tủ Sách' : '❤️ Lưu Vào Tủ Sách';
+  const favText = document.getElementById('comicModalFavText');
+  if (favText) favText.innerText = isFav ? '💔 Bỏ Khỏi Tủ Sách' : '❤️ Lưu Vào Tủ Sách';
+  const favRow = document.getElementById('comicModalFavCatRow');
+  if (favRow) favRow.style.display = isFav ? 'flex' : 'none';
+  if (isFav) {
+    const catId = getFavItemCategory(comic.id, comic);
+    populateFavCatSelect(document.getElementById('comicModalFavCatSelect'), catId);
+  }
 
   document.getElementById('modalComicOverlay').classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -2073,14 +2799,34 @@ function toggleFavoriteComicCurrent() {
   if (!currentComicObj) return;
   toggleFavComic(null, currentComicObj.id);
   const isFav = favorites.has(currentComicObj.id);
-  document.getElementById('comicModalFavText').innerText = isFav ? '💔 Bỏ Khỏi Tủ Sách' : '❤️ Lưu Vào Tủ Sách';
+  const favText = document.getElementById('comicModalFavText');
+  if (favText) favText.innerText = isFav ? '💔 Bỏ Khỏi Tủ Sách' : '❤️ Lưu Vào Tủ Sách';
+  const favRow = document.getElementById('comicModalFavCatRow');
+  if (favRow) favRow.style.display = isFav ? 'flex' : 'none';
+  if (isFav) {
+    const catId = getFavItemCategory(currentComicObj.id, currentComicObj);
+    populateFavCatSelect(document.getElementById('comicModalFavCatSelect'), catId);
+  }
 }
 
 // Favorite Handlers
 function toggleFavVideo(e, vidId) {
   if (e) e.stopPropagation();
-  if (favorites.has(vidId)) favorites.delete(vidId);
-  else favorites.add(vidId);
+  let vObj = getRepoData(currentRepo).find(item => item.vid_id === vidId);
+  if (!vObj) {
+    vObj = getAllReposData().find(item => item.vid_id === vidId);
+  }
+
+  if (favorites.has(vidId)) {
+    favorites.delete(vidId);
+    showToast('Đã xóa khỏi tủ sách', '💔');
+  } else {
+    favorites.add(vidId);
+    const catId = getFavItemCategory(vidId, vObj || {});
+    const allCats = getAllFavCategories();
+    const catObj = allCats.find(c => c.id === catId) || { name: 'Mục Khác', icon: '📁' };
+    showToast(`Đã lưu vào mục "${catObj.icon} ${catObj.name}"`, catObj.icon);
+  }
   localStorage.setItem('yt_truyen_favs', JSON.stringify(Array.from(favorites)));
   updateNavBadges();
   renderCurrentRepo();
@@ -2088,8 +2834,21 @@ function toggleFavVideo(e, vidId) {
 
 function toggleFavComic(e, comicId) {
   if (e) e.stopPropagation();
-  if (favorites.has(comicId)) favorites.delete(comicId);
-  else favorites.add(comicId);
+  let cObj = getRepoData('truyen_tranh').find(item => item.id === comicId);
+  if (!cObj) {
+    cObj = getAllReposData().find(item => item.id === comicId);
+  }
+
+  if (favorites.has(comicId)) {
+    favorites.delete(comicId);
+    showToast('Đã xóa khỏi tủ sách', '💔');
+  } else {
+    favorites.add(comicId);
+    const catId = getFavItemCategory(comicId, cObj || {});
+    const allCats = getAllFavCategories();
+    const catObj = allCats.find(c => c.id === catId) || { name: 'Mục Khác', icon: '📁' };
+    showToast(`Đã lưu vào mục "${catObj.icon} ${catObj.name}"`, catObj.icon);
+  }
   localStorage.setItem('yt_truyen_favs', JSON.stringify(Array.from(favorites)));
   updateNavBadges();
   renderCurrentRepo();
@@ -2097,12 +2856,39 @@ function toggleFavComic(e, comicId) {
 
 function toggleOnlyFavorites() {
   showOnlyFav = !showOnlyFav;
+  currentFavCategory = 'all';
+
+  document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.remove('active'));
+  if (showOnlyFav) {
+    const favNav = document.getElementById('nav-favorites');
+    if (favNav) favNav.classList.add('active');
+  } else {
+    const repoNav = document.getElementById('nav-' + currentRepo);
+    if (repoNav) repoNav.classList.add('active');
+  }
+
+  const favBtn = document.getElementById('favFilterBtn');
+  if (favBtn) favBtn.classList.toggle('active', showOnlyFav);
+
   renderCurrentRepo();
+  closeMobileSidebar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function toggleFavFilter(btn) {
   showOnlyFav = !showOnlyFav;
-  btn.classList.toggle('active', showOnlyFav);
+  currentFavCategory = 'all';
+  if (btn) btn.classList.toggle('active', showOnlyFav);
+
+  document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.remove('active'));
+  if (showOnlyFav) {
+    const favNav = document.getElementById('nav-favorites');
+    if (favNav) favNav.classList.add('active');
+  } else {
+    const repoNav = document.getElementById('nav-' + currentRepo);
+    if (repoNav) repoNav.classList.add('active');
+  }
+
   renderCurrentRepo();
 }
 
@@ -2475,15 +3261,23 @@ function resetAllFilters() {
   currentPrimaryFilter = 'all';
   document.getElementById('primaryFilterSelect').value = 'all';
   currentCategory = 'all';
+  currentFavCategory = 'all';
   currentSort = 'default';
   document.getElementById('sortSelect').value = 'default';
   showOnlyFav = false;
+
+  document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.remove('active'));
+  const activeNav = document.getElementById('nav-' + currentRepo);
+  if (activeNav) activeNav.classList.add('active');
 
   document.querySelectorAll('#genreTagGroup .filter-chip').forEach(b => {
     if (b !== document.getElementById('favFilterBtn')) b.classList.remove('active');
   });
   const firstChip = document.querySelector('#genreTagGroup .filter-chip');
   if (firstChip) firstChip.classList.add('active');
+
+  const favBtn = document.getElementById('favFilterBtn');
+  if (favBtn) favBtn.classList.remove('active');
 
   renderCurrentRepo();
 }
@@ -2539,6 +3333,7 @@ document.addEventListener('keydown', (e) => {
     closeComicModal();
     closeSyncVideoModal();
     closeSyncComicModal();
+    closeCreateFavCategoryModal();
     closeMobileSidebar();
   }
   if (e.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
