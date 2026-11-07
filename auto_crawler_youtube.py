@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-import urllib.request, re, json, time, os
-
-HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    'Content-Type': 'application/json',
-    'Accept-Language': 'vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7'
-}
+import urllib.request, json, time, os, subprocess, shutil
 
 FIREBASE_URL = 'https://huy-truyen-default-rtdb.firebaseio.com'
 
@@ -13,167 +7,171 @@ PLAYLIST_MAP = {
     'manhua_review': {
         'pid': 'PLiRIDCLG9ywgG1ICxbFRo6Jd_oo3_VedK',
         'default_genre': 'Review Tổng Hợp',
-        'is_short': False
+        'is_short': False,
+        'label': 'Anime Review (anime =))'
     },
     'manhua_short': {
         'pid': 'PLSrwH1M5cNVI',
         'default_genre': 'Shorts / Highlight',
-        'is_short': True
+        'is_short': True,
+        'label': 'Anime Shorts'
     },
     'ggggg': {
         'pid': 'PLHoJ3mnZpj-M',
         'default_genre': 'GGGGG Series',
-        'is_short': False
+        'is_short': False,
+        'label': 'GGGGGGGG Series'
     },
     'gggg_short': {
         'pid': 'PLcTLFRFPWUHQ',
         'default_genre': 'GGGG Short',
-        'is_short': True
+        'is_short': True,
+        'label': '=)) ggggggg Short'
     }
 }
 
-def extract_all_video_items(obj):
+def get_yt_dlp_path():
+    candidate = os.path.expanduser('~/.local/bin/yt-dlp')
+    if os.path.exists(candidate) and os.access(candidate, os.X_OK):
+        return candidate
+    return shutil.which('yt-dlp')
+
+def format_duration(sec):
+    if not sec or sec <= 0:
+        return '00:00'
+    h = sec // 3600
+    m = (sec % 3600) // 60
+    s = sec % 60
+    if h > 0:
+        return f"{h}:{m:02d}:{s:02d}"
+    return f"{m:02d}:{s:02d}"
+
+def fetch_playlist_yt_dlp(playlist_id, is_short=False):
+    yt_bin = get_yt_dlp_path()
+    if not yt_bin:
+        print("⚠️ Không tìm thấy yt-dlp, vui lòng kiểm tra ~/.local/bin/yt-dlp")
+        return []
+
+    url = f'https://www.youtube.com/playlist?list={playlist_id}'
+    cmd = [
+        yt_bin,
+        '--flat-playlist',
+        '--dump-single-json',
+        '--no-warnings',
+        '--ignore-errors',
+        url
+    ]
+    try:
+        res = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=120)
+        data = json.loads(res.stdout)
+        raw_entries = data.get('entries', [])
+    except Exception as e:
+        print(f"❌ Lỗi khi quét playlist {playlist_id} bằng yt-dlp: {e}")
+        return []
+
     items = []
-    if isinstance(obj, dict):
-        if 'lockupViewModel' in obj:
-            lk = obj['lockupViewModel']
-            vid_id = lk.get('contentId')
-            title = lk.get('rendererContext', {}).get('accessibilityContext', {}).get('label', '')
-            dur = ''
-            overlays = lk.get('contentImage', {}).get('thumbnailViewModel', {}).get('overlays', [])
-            for ov in overlays:
-                for b in ov.get('thumbnailBottomOverlayViewModel', {}).get('badges', []):
-                    t = b.get('thumbnailBadgeViewModel', {}).get('text')
-                    if t: dur = t
-            if vid_id:
-                title = re.sub(r'\s*\d+\s*(?:giờ|phút|giây|tiếng).*$', '', title).strip() or title
-                items.append({'id': vid_id, 'title': title or 'Video YouTube', 'duration': dur or '10:00'})
-        elif 'shortsLockupViewModel' in obj:
-            slk = obj['shortsLockupViewModel']
-            vid_id = slk.get('onTap', {}).get('innertubeCommand', {}).get('reelWatchEndpoint', {}).get('videoId')
-            title = slk.get('overlayMetadata', {}).get('primaryText', {}).get('content', '')
-            if vid_id:
-                items.append({'id': vid_id, 'title': title or 'YouTube Short', 'duration': '0:30'})
-        else:
-            for v in obj.values():
-                items.extend(extract_all_video_items(v))
-    elif isinstance(obj, list):
-        for it in obj:
-            items.extend(extract_all_video_items(it))
+    seen = set()
+    for entry in raw_entries:
+        if not entry:
+            continue
+        vid_id = entry.get('id')
+        if not vid_id or vid_id in seen:
+            continue
+        seen.add(vid_id)
+
+        title = entry.get('title') or 'Video YouTube'
+        if title in ('[Private video]', '[Deleted video]'):
+            continue
+
+        raw_dur = entry.get('duration')
+        sec = int(raw_dur) if raw_dur is not None and str(raw_dur).isdigit() else 0
+        dur_str = format_duration(sec) if sec > 0 else ('0:30' if is_short else '10:00')
+
+        channel = entry.get('channel') or entry.get('uploader') or 'YouTube Playlist'
+        link = f"https://www.youtube.com/shorts/{vid_id}" if is_short else f"https://www.youtube.com/watch?v={vid_id}"
+
+        items.append({
+            'vid_id': vid_id,
+            'title': title[:180],
+            'duration': dur_str,
+            'seconds': sec,
+            'channel': channel,
+            'link': link,
+            'thumb': f"https://img.youtube.com/vi/{vid_id}/mqdefault.jpg",
+            'thumb_high': f"https://img.youtube.com/vi/{vid_id}/hqdefault.jpg"
+        })
+
     return items
 
-def find_continuation_token(obj):
-    if isinstance(obj, dict):
-        if 'continuationCommand' in obj and 'token' in obj['continuationCommand']:
-            return obj['continuationCommand']['token']
-        for v in obj.values():
-            tok = find_continuation_token(v)
-            if tok: return tok
-    elif isinstance(obj, list):
-        for it in obj:
-            tok = find_continuation_token(it)
-            if tok: return tok
-    return None
-
-def fetch_playlist_all(playlist_id, is_short=False):
-    url = f'https://www.youtube.com/playlist?list={playlist_id}'
-    req = urllib.request.Request(url, headers={'User-Agent': HEADERS['User-Agent'], 'Accept-Language': HEADERS['Accept-Language']})
-    try:
-        html = urllib.request.urlopen(req).read().decode('utf-8', errors='ignore')
-    except Exception as e:
-        print(f'Error loading {playlist_id}: {e}')
-        return []
-
-    m = re.search(r'var ytInitialData\s*=\s*(\{.*?\});</script>', html) or re.search(r'ytInitialData\s*=\s*(\{.*?\});', html)
-    if not m:
-        return []
-
-    data = json.loads(m.group(1))
-    items = extract_all_video_items(data)
-    token = find_continuation_token(data)
-
-    page = 1
-    while token and page < 30:
-        page += 1
-        payload = {
-            'context': {'client': {'clientName': 'WEB', 'clientVersion': '2.20240101.00.00', 'hl': 'vi', 'gl': 'VN'}},
-            'continuation': token
-        }
-        api_req = urllib.request.Request('https://www.youtube.com/youtubei/v1/browse', data=json.dumps(payload).encode('utf-8'), headers=HEADERS)
-        try:
-            resp = json.loads(urllib.request.urlopen(api_req).read().decode('utf-8'))
-            cont_items = extract_all_video_items(resp)
-            items.extend(cont_items)
-            token = find_continuation_token(resp)
-        except Exception as e:
-            print(f'Continuation page {page} error: {e}')
-            break
-
-    seen = set()
-    unique_items = []
-    for it in items:
-        if it['id'] not in seen:
-            seen.add(it['id'])
-            unique_items.append(it)
-    return unique_items
-
-def main():
-    print("🚀 Bắt đầu quét tự động các danh sách phát YouTube...")
+def sync_all_playlists():
+    print("🚀 Bắt đầu quét chuyên sâu 100% video YouTube qua yt-dlp...")
     total_added_all = 0
 
     for repo_key, conf in PLAYLIST_MAP.items():
         pid = conf['pid']
-        print(f"\n📂 Đang quét kho: {repo_key} (Playlist: {pid})...")
-        crawled = fetch_playlist_all(pid, is_short=conf['is_short'])
-        print(f" -> Tìm thấy {len(crawled)} video trên YouTube")
+        label = conf.get('label', repo_key)
+        print(f"\n📂 Đang quét: {label} (Playlist ID: {pid})...")
+        crawled = fetch_playlist_yt_dlp(pid, is_short=conf['is_short'])
+        print(f" -> Trích xuất thành công: {len(crawled)} video từ YouTube Playlist")
 
         fb_url = f'{FIREBASE_URL}/repos/{repo_key}.json'
-        fb_req = urllib.request.Request(fb_url)
         try:
-            cur_data = json.loads(urllib.request.urlopen(fb_req).read().decode('utf-8')) or []
-        except:
+            req = urllib.request.Request(fb_url)
+            cur_data = json.loads(urllib.request.urlopen(req, timeout=15).read().decode('utf-8')) or []
+        except Exception as e:
+            print(f" ⚠️ Không lấy được dữ liệu hiện tại từ Firebase: {e}")
             cur_data = []
 
-        existing_ids = set(v.get('vid_id') for v in cur_data if v.get('vid_id'))
+        existing_map = {}
+        for item in cur_data:
+            if isinstance(item, dict) and item.get('vid_id'):
+                existing_map[item['vid_id']] = item
+
         added = []
+        updated_list = []
 
-        for it in crawled:
-            if it['id'] not in existing_ids:
-                sec = 0
-                dur_parts = it['duration'].split(':')
-                for part in dur_parts:
-                    sec = (60 * sec) + (int(part) if part.isdigit() else 0)
-                added.append({
-                    'title': it['title'][:160],
-                    'duration': it['duration'],
-                    'seconds': sec,
-                    'vid_id': it['id'],
-                    'channel': 'YouTube Playlist',
-                    'link': f'https://www.youtube.com/shorts/{it["id"]}' if conf['is_short'] else f'https://www.youtube.com/watch?v={it["id"]}',
-                    'thumb': f'https://img.youtube.com/vi/{it["id"]}/mqdefault.jpg',
-                    'thumb_high': f'https://img.youtube.com/vi/{it["id"]}/hqdefault.jpg',
-                    'genre': conf['default_genre'],
-                    'desc': 'Video tự động cập nhật từ YouTube Playlist.'
-                })
+        for c_item in crawled:
+            vid_id = c_item['vid_id']
+            if vid_id in existing_map:
+                # Giữ nguyên thông tin đã có, cập nhật nếu thiếu
+                old = existing_map[vid_id]
+                old['title'] = c_item['title']
+                if not old.get('duration') or old.get('duration') == '00:00':
+                    old['duration'] = c_item['duration']
+                    old['seconds'] = c_item['seconds']
+                if not old.get('channel') or old.get('channel') == 'Kênh mới':
+                    old['channel'] = c_item['channel']
+                updated_list.append(old)
+            else:
+                c_item['genre'] = conf['default_genre']
+                c_item['desc'] = 'Video tự động cập nhật từ YouTube Playlist.'
+                added.append(c_item)
+                updated_list.append(c_item)
 
-        if added:
-            total_added_all += len(added)
-            merged = added + cur_data
-            merged.sort(key=lambda x: x.get('seconds', 0), reverse=True)
-            print(f" ✨ Phát hiện {len(added)} video MỚI! Tổng hiện tại: {len(merged)}")
-            
-            put_req = urllib.request.Request(
-                fb_url,
-                data=json.dumps(merged, ensure_ascii=False).encode('utf-8'),
-                method='PUT',
-                headers={'Content-Type': 'application/json'}
-            )
-            urllib.request.urlopen(put_req)
-            print(f" ✅ Đã lưu thẳng lên Firebase Cloud Database!")
-        else:
-            print(f" ℹ️ Không có video mới (Kho đã có đủ {len(cur_data)} video).")
+        # Giữ lại các video cũ đã có mà có thể YouTube tạm thời không trả về
+        seen_ids = set(c['vid_id'] for c in crawled)
+        for old_id, old_item in existing_map.items():
+            if old_id not in seen_ids:
+                updated_list.append(old_item)
 
-    print(f"\n🎉 HOÀN THÀNH TOÀN BỘ! Đã bổ sung tổng cộng {total_added_all} video mới vào Cloud.")
+        # Sắp xếp theo thời lượng giảm dần
+        updated_list.sort(key=lambda x: x.get('seconds', 0), reverse=True)
+
+        print(f" ✨ Phát hiện: {len(added)} video MỚI! Tổng hiện tại: {len(updated_list)} video")
+
+        # Lưu lên Firebase
+        put_req = urllib.request.Request(
+            fb_url,
+            data=json.dumps(updated_list, ensure_ascii=False).encode('utf-8'),
+            method='PUT',
+            headers={'Content-Type': 'application/json'}
+        )
+        urllib.request.urlopen(put_req, timeout=30)
+        print(f" ✅ Đã đồng bộ trọn vẹn 100% ({len(updated_list)} video) lên Firebase Cloud Database!")
+        total_added_all += len(added)
+
+    print(f"\n🎉 HOÀN THÀNH XUẤT SẮC! Đã bổ sung tổng cộng {total_added_all} video mới vào Cloud.")
+    return total_added_all
 
 if __name__ == '__main__':
-    main()
+    sync_all_playlists()
